@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
 
                 StartCoroutine(Move(targetPos));//running constantly in my game so movement is smooth.
             }
+            bool flipped = input.x < 0;
+            this.transform.rotation = Quaternion.Euler(new Vector3(0f, flipped ? 180f : 0f, 0f));
         }
         animator.SetBool("isMoving", isMoving);
     }
