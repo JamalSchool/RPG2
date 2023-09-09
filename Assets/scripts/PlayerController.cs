@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
 
     private Animator animator;
 
+    public LayerMask solidObjectLayer;
+
     private void Awake() //as soon as i load my player it will load up the animations.
     {
         animator = GetComponent<Animator>();
@@ -34,11 +36,15 @@ public class PlayerController : MonoBehaviour
                 animator.SetFloat("moveX", input.x); // positions the animations for the characters.
                 animator.SetFloat("moveY", input.y);
 
-                var targetPos = transform.position; //stores a position
+                var targetPos = transform.position ; //stores a position
                 targetPos.x += input.x;
                 targetPos.y += input.y;
 
-                StartCoroutine(Move(targetPos));//running constantly in my game so movement is smooth.
+                if(isWalkable(targetPos))
+                {
+                    StartCoroutine(Move(targetPos));//running constantly in my game so movement is smooth.
+                }
+                
             }
             
         }
@@ -56,6 +62,13 @@ public class PlayerController : MonoBehaviour
         isMoving = false;
     }
     
-
+    private bool isWalkable(Vector3 targetpos)
+    {
+        if (Physics2D.OverlapCircle(targetpos, 0.2f, solidObjectLayer) != null)
+        {
+            return false;
+        }
+        return true;
+    }
 
 }
